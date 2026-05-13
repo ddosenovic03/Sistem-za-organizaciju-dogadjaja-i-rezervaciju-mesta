@@ -1,5 +1,6 @@
 package singidunum.isa.sistemzarezervaciju.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class OrganizatorService {
 	@Autowired
 	private OrganizatorRepository organizatorRepository;
 
-	public Iterable<Organizator> findAll() {
-		return this.organizatorRepository.findAll();
+	public List<Organizator> findAll() {
+		return (List<Organizator>) this.organizatorRepository.findAll();
 	}
 
 	public Organizator findById(Long id) {
@@ -40,5 +41,10 @@ public class OrganizatorService {
 		organizator.setKompanija(o.getKompanija());
 
 		return this.organizatorRepository.save(organizator);
+	}
+	
+	public void delete(Long id) {
+		Organizator o = this.findById(id);
+		this.organizatorRepository.delete(o);
 	}
 }

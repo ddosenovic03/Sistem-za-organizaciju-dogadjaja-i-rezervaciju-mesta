@@ -1,5 +1,6 @@
 package singidunum.isa.sistemzarezervaciju.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class LokacijaService {
 	@Autowired
 	private LokacijaRepository lokacijaRepository;
 
-	public Iterable<Lokacija> findAll() {
-		return this.lokacijaRepository.findAll();
+	public List<Lokacija> findAll() {
+		return (List<Lokacija>) this.lokacijaRepository.findAll();
 	}
 
 	public Lokacija findById(Long id) {

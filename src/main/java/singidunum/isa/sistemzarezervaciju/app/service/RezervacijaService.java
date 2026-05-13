@@ -1,6 +1,7 @@
 package singidunum.isa.sistemzarezervaciju.app.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,20 @@ public class RezervacijaService {
 	@Autowired
 	private PosetilacRepository posetilacRepository;
 
-	public Iterable<Rezervacija> findAll() {
-		return this.rezervacijaRepository.findAll();
+	public List<Rezervacija> findAll() {
+		return (List<Rezervacija>) this.rezervacijaRepository.findAll();
 	}
 
+	public Rezervacija findById(Long id) {
+		Optional<Rezervacija> rezervacija = this.rezervacijaRepository.findById(id);
+		
+		if (rezervacija.isEmpty()) {
+			throw new RuntimeException("Rezervacija nije pronađena.");
+		}
+		
+		return rezervacija.get();
+	}
+	
 	public Rezervacija save(Long dogadjajId, Long posetilacId, Integer brMesta) {
 
 		Optional<Dogadjaj> dogadjajOptional = this.dogadjajRepository.findById(dogadjajId);

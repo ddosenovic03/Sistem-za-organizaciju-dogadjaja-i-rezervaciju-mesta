@@ -1,5 +1,6 @@
 package singidunum.isa.sistemzarezervaciju.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class PosetilacService {
 	@Autowired
 	private PosetilacRepository posetilacRepository;
 
-	public Iterable<Posetilac> findAll() {
-		return this.posetilacRepository.findAll();
+	public List<Posetilac> findAll() {
+		return (List<Posetilac>) this.posetilacRepository.findAll();
 	}
 
 	public Posetilac findById(Long id) {

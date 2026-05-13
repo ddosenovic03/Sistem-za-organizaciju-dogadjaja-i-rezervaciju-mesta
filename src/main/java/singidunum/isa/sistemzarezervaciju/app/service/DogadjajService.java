@@ -1,5 +1,6 @@
 package singidunum.isa.sistemzarezervaciju.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class DogadjajService {
 	@Autowired
 	private DogadjajRepository dogadjajRepository;
 
-	public Iterable<Dogadjaj> findAll() {
-		return this.dogadjajRepository.findAll();
+	public List<Dogadjaj> findAll() {
+		return (List<Dogadjaj>) this.dogadjajRepository.findAll();
 	}
 
 	public Dogadjaj findById(Long id) {
