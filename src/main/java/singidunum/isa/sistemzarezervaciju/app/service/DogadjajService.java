@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import singidunum.isa.sistemzarezervaciju.app.exception.BadRequestException;
+import singidunum.isa.sistemzarezervaciju.app.exception.ResourceNotFoundException;
 import singidunum.isa.sistemzarezervaciju.app.model.Dogadjaj;
 import singidunum.isa.sistemzarezervaciju.app.model.StatusDogadjaja;
 import singidunum.isa.sistemzarezervaciju.app.repository.DogadjajRepository;
@@ -24,7 +26,7 @@ public class DogadjajService {
 		Optional<Dogadjaj> dogadjaj = dogadjajRepository.findById(id);
 
 		if (dogadjaj.isEmpty()) {
-			throw new RuntimeException("Dogadjaj nije pronađen.");
+			throw new ResourceNotFoundException("Dogadjaj nije pronađen.");
 		}
 
 		return dogadjaj.get();
@@ -41,11 +43,11 @@ public class DogadjajService {
 		}
 
 		if (d.getMaksBrMesta() <= 0) {
-			throw new RuntimeException("Maksimalan broj mesta mora biti veći od 0.");
+			throw new BadRequestException("Maksimalan broj mesta mora biti veći od 0.");
 		}
 
 		if (d.getLokacija().getKapacitet() < d.getMaksBrMesta()) {
-			throw new RuntimeException("Maksimalan broj mesta ne može biti veći od kapaciteta lokacije.");
+			throw new BadRequestException("Maksimalan broj mesta ne može biti veći od kapaciteta lokacije.");
 		}
 
 		return this.dogadjajRepository.save(d);

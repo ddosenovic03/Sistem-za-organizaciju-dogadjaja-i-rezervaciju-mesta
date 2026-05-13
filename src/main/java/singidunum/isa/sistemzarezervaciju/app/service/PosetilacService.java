@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import singidunum.isa.sistemzarezervaciju.app.exception.ResourceNotFoundException;
 import singidunum.isa.sistemzarezervaciju.app.model.Posetilac;
 import singidunum.isa.sistemzarezervaciju.app.repository.PosetilacRepository;
 
@@ -23,7 +24,7 @@ public class PosetilacService {
 		Optional<Posetilac> posetilac = this.posetilacRepository.findById(id);
 
 		if (posetilac.isEmpty()) {
-			throw new RuntimeException("Posetilac nije pronađen.");
+			throw new ResourceNotFoundException("Posetilac nije pronađen.");
 		}
 
 		return posetilac.get();

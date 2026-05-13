@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import singidunum.isa.sistemzarezervaciju.app.exception.ResourceNotFoundException;
 import singidunum.isa.sistemzarezervaciju.app.model.Organizator;
 import singidunum.isa.sistemzarezervaciju.app.repository.OrganizatorRepository;
 
@@ -23,7 +24,7 @@ public class OrganizatorService {
 		Optional<Organizator> organizator = this.organizatorRepository.findById(id);
 
 		if (organizator.isEmpty()) {
-			throw new RuntimeException("Organizator nije pronađen.");
+			throw new ResourceNotFoundException("Organizator nije pronađen.");
 		}
 
 		return organizator.get();

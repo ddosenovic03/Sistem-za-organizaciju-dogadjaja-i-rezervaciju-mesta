@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import singidunum.isa.sistemzarezervaciju.app.exception.BadRequestException;
+import singidunum.isa.sistemzarezervaciju.app.exception.ResourceNotFoundException;
 import singidunum.isa.sistemzarezervaciju.app.model.Dogadjaj;
 import singidunum.isa.sistemzarezervaciju.app.model.Posetilac;
 import singidunum.isa.sistemzarezervaciju.app.model.Rezervacija;
@@ -36,7 +38,7 @@ public class RezervacijaService {
 		Optional<Rezervacija> rezervacija = this.rezervacijaRepository.findById(id);
 		
 		if (rezervacija.isEmpty()) {
-			throw new RuntimeException("Rezervacija nije pronađena.");
+			throw new ResourceNotFoundException("Rezervacija nije pronađena.");
 		}
 		
 		return rezervacija.get();
@@ -48,30 +50,30 @@ public class RezervacijaService {
 		Optional<Posetilac> posetilacOptional = this.posetilacRepository.findById(posetilacId);
 
 		if (dogadjajOptional.isEmpty()) {
-			throw new RuntimeException("Događaj nije pronađen.");
+			throw new ResourceNotFoundException("Događaj nije pronađen.");
 		}
 
 		if (posetilacOptional.isEmpty()) {
-			throw new RuntimeException("Posetilac nije pronađen.");
+			throw new ResourceNotFoundException("Posetilac nije pronađen.");
 		}
 
 		Dogadjaj dogadjaj = dogadjajOptional.get();
 		Posetilac posetilac = posetilacOptional.get();
 
 		if (dogadjaj.getStatus() != StatusDogadjaja.AKTIVAN) {
-			throw new RuntimeException("Rezervacija nije moguća jer događaj nije aktivan.");
+			throw new BadRequestException("Rezervacija nije moguća jer događaj nije aktivan.");
 		}
 
 		if (brMesta <= 0) {
-			throw new RuntimeException("Broj mesta mora biti veći od 0.");
+			throw new BadRequestException("Broj mesta mora biti veći od 0.");
 		}
 
 		if (dogadjaj.getBrSlobodnihMesta() < brMesta) {
-			throw new RuntimeException("Nema dovoljno slobodnih mesta.");
+			throw new BadRequestException("Nema dovoljno slobodnih mesta.");
 		}
 
 		if (this.rezervacijaRepository.postojiAktivnaRezervacija(dogadjajId, posetilacId)) {
-			throw new RuntimeException("Posetilac već ima aktivnu rezervaciju za ovaj događaj.");
+			throw new BadRequestException("Posetilac već ima aktivnu rezervaciju za ovaj događaj.");
 		}
 
 		Rezervacija r = new Rezervacija();
@@ -97,13 +99,13 @@ public class RezervacijaService {
 		Optional<Rezervacija> rezervacijaOptional = this.rezervacijaRepository.findById(rezervacijaId);
 
 		if (rezervacijaOptional.isEmpty()) {
-			throw new RuntimeException("Rezervacija nije pronađena.");
+			throw new ResourceNotFoundException("Rezervacija nije pronađena.");
 		}
 
 		Rezervacija rezervacija = rezervacijaOptional.get();
 
 		if (rezervacija.getStatus() == StatusRezervacije.OTKAZANA) {
-			throw new RuntimeException("Rezervacija je već otkazana.");
+			throw new BadRequestException("Rezervacija je već otkazana.");
 		}
 
 		Dogadjaj dogadjaj = rezervacija.getDogadjaj();

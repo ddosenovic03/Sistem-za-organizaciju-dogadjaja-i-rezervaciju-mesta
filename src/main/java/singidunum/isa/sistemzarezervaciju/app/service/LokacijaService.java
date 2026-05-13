@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import singidunum.isa.sistemzarezervaciju.app.exception.BadRequestException;
+import singidunum.isa.sistemzarezervaciju.app.exception.ResourceNotFoundException;
 import singidunum.isa.sistemzarezervaciju.app.model.Lokacija;
 import singidunum.isa.sistemzarezervaciju.app.repository.LokacijaRepository;
 
@@ -23,7 +25,7 @@ public class LokacijaService {
 		Optional<Lokacija> lokacija = this.lokacijaRepository.findById(id);
 
 		if (lokacija.isEmpty()) {
-			throw new RuntimeException("Lokacija nije pronađena.");
+			throw new ResourceNotFoundException("Lokacija nije pronađena.");
 		}
 
 		return lokacija.get();
@@ -32,7 +34,7 @@ public class LokacijaService {
 	public Lokacija save(Lokacija l) {
 
 		if (l.getKapacitet() <= 0) {
-			throw new RuntimeException("Kapacitet lokacije mora biti veći od 0.");
+			throw new BadRequestException("Kapacitet lokacije mora biti veći od 0.");
 		}
 
 		return this.lokacijaRepository.save(l);
@@ -42,7 +44,7 @@ public class LokacijaService {
 		Lokacija lokacija = this.findById(id);
 
 		if (l.getKapacitet() <= 0) {
-			throw new RuntimeException("Kapacitet lokacije mora biti veći od 0.");
+			throw new BadRequestException("Kapacitet lokacije mora biti veći od 0.");
 		}
 
 		lokacija.setNaziv(l.getNaziv());
