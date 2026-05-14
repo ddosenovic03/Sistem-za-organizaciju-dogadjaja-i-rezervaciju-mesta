@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDogadjaji } from "../services/dogadjajService";
+import { deleteDogadjaj } from "../services/dogadjajService";
 import DogadjajForma from "./DogadjajForma";
 import RezervacijaForma from "./RezervacijaForma";
 
@@ -11,6 +12,15 @@ function DogadjajList() {
         try {
             const data = await getDogadjaji();
             setDogadjaji(data);
+        } catch (error) {
+            setGreska(error.message);
+        }
+    }
+
+    async function obrisiDogadjaj(id) {
+        try {
+            await deleteDogadjaj(id);
+            ucitajDogadjaje();
         } catch (error) {
             setGreska(error.message);
         }
@@ -36,6 +46,7 @@ function DogadjajList() {
                         <th>Organizator</th>
                         <th>Lokacija</th>
                         <th>Rezervacija</th>
+                        <th>Akcije</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,6 +59,7 @@ function DogadjajList() {
                             <td>{d.organizatorIme}</td>
                             <td>{d.lokacijaNaziv}</td>
                             <td><RezervacijaForma dogadjajId={d.id} onRezervacijaCreated={ucitajDogadjaje} /></td>
+                            <td><button className="btn btn-danger" onClick={() => obrisiDogadjaj(d.id)}>Obriši</button></td>
                         </tr>
                     ))}
                 </tbody>

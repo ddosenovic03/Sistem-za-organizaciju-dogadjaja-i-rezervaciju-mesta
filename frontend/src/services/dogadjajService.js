@@ -20,3 +20,11 @@ export async function createDogadjaj(dogadjaj) {
 
     return response.json();
 }
+
+export async function deleteDogadjaj(id) {
+    const response = await fetch(`${API_URL}/${id}`, {method: 'DELETE'});
+    console.log(`${API_URL}/${id}`);
+    if (!response.ok) {
+        throw new Error('Greška prilikom brisanja događaja');
+    }
+}

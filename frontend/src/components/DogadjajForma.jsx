@@ -1,9 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createDogadjaj } from "../services/dogadjajService";
+import { getOrganizatori } from "../services/organizatorService";
+import { getLokacije } from "../services/lokacijaService";
 
 function DogadjajForma({onDogadjajCreated}) {
     const [formData, setFormData] = useState({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
+    const [organizatori, setOrganizatori] = useState([]);
+    const [lokacije, setLokacije] = useState([]);
     const [greska, setGreska] = useState("");
+
+    useEffect(() => {
+        ucitajPodatke();
+    }, []);
+
+    async function ucitajPodatke() {
+        try {
+            const organizatoriData = await getOrganizatori();
+            const lokacijeData = await getLokacije();
+
+            setOrganizatori(organizatoriData);
+            setLokacije(lokacijeData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     function handleChange(e) {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -48,10 +68,20 @@ function DogadjajForma({onDogadjajCreated}) {
                     <input type="number" name="maksBrMesta" placeholder="Maksimalan broj mesta" className="form-control" value={formData.maksBrMesta} onChange={handleChange} required />
                 </div>
                 <div className="mb-3">
-                    <input type="number" name="organizatorId" placeholder="ID organizatora" className="form-control" value={formData.organizatorId} onChange={handleChange} required />
+                    <select name="organizatorId" className="form-control" value={formData.organizatorId} onChange={handleChange} required>
+                        <option value="">Izaberite organizatora</option>
+                        {organizatori.map(org => (
+                            <option key={org.id} value={org.id}>{org.email}</option>
+                        ))}
+                    </select>
                 </div>
                 <div className="mb-3">
-                    <input type="number" name="lokacijaId" placeholder="ID lokacije" className="form-control" value={formData.lokacijaId} onChange={handleChange} required />
+                    <select name="lokacijaId" className="form-control" value={formData.lokacijaId} onChange={handleChange} required>
+                        <option value="">Izaberite lokaciju</option>
+                        {lokacije.map(lok => (
+                            <option key={lok.id} value={lok.id}>{lok.naziv} - {lok.adresa} - {lok.grad}</option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit" className="btn btn-primary">Dodaj</button>
             </form>

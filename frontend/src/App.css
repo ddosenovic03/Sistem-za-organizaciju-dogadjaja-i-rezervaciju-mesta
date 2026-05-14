@@ -17,6 +17,11 @@
   }
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .hero {
   position: relative;
 
