@@ -8,6 +8,7 @@ function Navbar() {
                 <div className="navbar-nav">
                     <Link className="nav-link" to="/dogadjaji">Događaji</Link>
                     <Link className="nav-link" to="/organizatori">Organizatori</Link>
+                    <Link className="nav-link" to="/rezervacije">Rezervacije</Link>
                     <Link className="nav-link" to="/lokacije">Lokacije</Link>
                     <Link className="nav-link" to="/posetioci">Posetioci</Link>
                 </div>

@@ -4,10 +4,11 @@ import { getOrganizatori } from "../services/organizatorService";
 import { getLokacije } from "../services/lokacijaService";
 
 function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu}) {
-    const [formData, setFormData] = useState({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
+    const [formData, setFormData] = useState({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "", organizatorId: "", lokacijaId: ""});
     const [organizatori, setOrganizatori] = useState([]);
     const [lokacije, setLokacije] = useState([]);
     const [greska, setGreska] = useState("");
+    const [poruka, setPoruka] = useState("");
 
     useEffect(() => {
         ucitajPodatke();
@@ -49,13 +50,14 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
             if (dogadjajZaIzmenu) {
                 await updateDogadjaj(dogadjajZaIzmenu.id, {...formData, maksBrMesta: Number(formData.maksBrMesta), organizatorId: Number(formData.organizatorId), lokacijaId: Number(formData.lokacijaId)});
                 setDogadjajZaIzmenu(null);
+                setPoruka("Događaj uspešno ažuriran.");
             } else {
                 await createDogadjaj({...formData, maksBrMesta: Number(formData.maksBrMesta), organizatorId: Number(formData.organizatorId), lokacijaId: Number(formData.lokacijaId)});
+                setPoruka("Događaj uspešno kreiran.");
             }
 
-            setFormData({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
+            setFormData({naziv: "", opis: "", datumOdrzavanja: "", brSlobodnihMesta: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
             setGreska("");
-
             onDogadjajCreated();
         } catch (error) {
             setGreska(error.message);
@@ -65,7 +67,9 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
     return (
         <div className="card p-3 mt-4">
             <h2>Dodaj događaj</h2>
+
             {greska && <div className="alert alert-danger">{greska}</div>}
+            {poruka && <div className="alert alert-success">{poruka}</div>}
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">

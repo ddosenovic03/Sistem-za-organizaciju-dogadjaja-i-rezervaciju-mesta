@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getDogadjaji } from "../services/dogadjajService";
-import { deleteDogadjaj } from "../services/dogadjajService";
+import { getDogadjaji, deleteDogadjaj } from "../services/dogadjajService";
 import DogadjajForma from "./DogadjajForma";
 import RezervacijaForma from "./RezervacijaForma";
 
 function DogadjajList() {
     const [dogadjaji, setDogadjaji] = useState([]);
     const [greska, setGreska] = useState("");
+    const [poruka, setPoruka] = useState("");
     const [dogadjajZaIzmenu, setDogadjajZaIzmenu] = useState(null);
 
     async function ucitajDogadjaje() {
@@ -21,6 +21,7 @@ function DogadjajList() {
     async function obrisiDogadjaj(id) {
         try {
             await deleteDogadjaj(id);
+            setPoruka("Događaj uspešno obrisan.");
             ucitajDogadjaje();
         } catch (error) {
             setGreska(error.message);
@@ -39,12 +40,14 @@ function DogadjajList() {
 
             <h2>Događaji</h2>
 
+            {poruka && <div className="alert alert-success">{poruka}</div>}
             {greska && <div className="alert alert-danger">{greska}</div>}
 
             <table className="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Naziv</th>
+                        <th>Opis</th>
                         <th>Datum</th>
                         <th>Slobodna mesta</th>
                         <th>Status</th>
@@ -58,6 +61,7 @@ function DogadjajList() {
                     {dogadjaji.map(d => (
                         <tr key={d.id}>
                             <td>{d.naziv}</td>
+                            <td>{d.opis}</td>
                             <td>{d.datumOdrzavanja}</td>
                             <td>{d.brSlobodnihMesta}</td>
                             <td>{d.status}</td>

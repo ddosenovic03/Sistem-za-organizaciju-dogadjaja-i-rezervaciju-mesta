@@ -7,6 +7,7 @@ import DogadjajiPage from "./pages/DogadjajiPage";
 import OrganizatoriPage from "./pages/OrganizatoriPage";
 import LokacijePage from "./pages/LokacijePage";
 import PosetiociPage from "./pages/PosetiociPage";
+import RezervacijaPage from "./pages/RezervacijaPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/organizatori" element={<OrganizatoriPage />} />
           <Route path="/lokacije" element={<LokacijePage />} />
           <Route path="/posetioci" element={<PosetiociPage />} />
+          <Route path="/rezervacije" element={<RezervacijaPage />} />
         </Routes>
       </div>
     </BrowserRouter>
