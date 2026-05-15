@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { createDogadjaj } from "../services/dogadjajService";
+import { createDogadjaj, updateDogadjaj } from "../services/dogadjajService";
 import { getOrganizatori } from "../services/organizatorService";
 import { getLokacije } from "../services/lokacijaService";
 
-function DogadjajForma({onDogadjajCreated}) {
+function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu}) {
     const [formData, setFormData] = useState({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
     const [organizatori, setOrganizatori] = useState([]);
     const [lokacije, setLokacije] = useState([]);
@@ -12,6 +12,19 @@ function DogadjajForma({onDogadjajCreated}) {
     useEffect(() => {
         ucitajPodatke();
     }, []);
+
+    useEffect(() => {
+        if (dogadjajZaIzmenu) {
+            setFormData({
+                naziv: dogadjajZaIzmenu.naziv,
+                opis: dogadjajZaIzmenu.opis,
+                datumOdrzavanja: dogadjajZaIzmenu.datumOdrzavanja,
+                maksBrMesta: dogadjajZaIzmenu.maksBrMesta,
+                organizatorId: dogadjajZaIzmenu.organizatorId,
+                lokacijaId: dogadjajZaIzmenu.lokacijaId
+            });
+        }
+    }, [dogadjajZaIzmenu]);
 
     async function ucitajPodatke() {
         try {
@@ -33,12 +46,12 @@ function DogadjajForma({onDogadjajCreated}) {
         e.preventDefault();
 
         try {
-            await createDogadjaj({
-                ...formData,
-                maksBrMesta: Number(formData.maksBrMesta),
-                organizatorId: Number(formData.organizatorId),
-                lokacijaId: Number(formData.lokacijaId)
-            });
+            if (dogadjajZaIzmenu) {
+                await updateDogadjaj(dogadjajZaIzmenu.id, {...formData, maksBrMesta: Number(formData.maksBrMesta), organizatorId: Number(formData.organizatorId), lokacijaId: Number(formData.lokacijaId)});
+                setDogadjajZaIzmenu(null);
+            } else {
+                await createDogadjaj({...formData, maksBrMesta: Number(formData.maksBrMesta), organizatorId: Number(formData.organizatorId), lokacijaId: Number(formData.lokacijaId)});
+            }
 
             setFormData({naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "",organizatorId: "", lokacijaId: ""});
             setGreska("");
@@ -83,7 +96,14 @@ function DogadjajForma({onDogadjajCreated}) {
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Dodaj</button>
+                <button type="submit" className="btn btn-primary">{ dogadjajZaIzmenu ? "Izmeni" : "Dodaj" }</button>
+                {dogadjajZaIzmenu && (
+                    <button type="button" className="btn btn-secondary ms-2"
+                        onClick={() => {
+                            setDogadjajZaIzmenu(null);
+                            setFormData({ naziv: "", opis: "", datumOdrzavanja: "", maksBrMesta: "", organizatorId: "", lokacijaId: "", });
+                        }}>Poništi izmenu</button>
+                )}
             </form>
         </div>
     );

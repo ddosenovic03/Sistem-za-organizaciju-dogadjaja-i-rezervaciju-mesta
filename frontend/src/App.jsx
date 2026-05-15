@@ -1,34 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
-import DogadjajList from './components/DogadjajList'
-import OrganizatorForma from './components/OrganizatorForma'
-import LokacijaForma from './components/LokacijaForma'
-import PosetilacForma from './components/PosetilacForma'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+
+import HomePage from "./pages/HomePage";
+import DogadjajiPage from "./pages/DogadjajiPage";
+import OrganizatoriPage from "./pages/OrganizatoriPage";
+import LokacijePage from "./pages/LokacijePage";
+import PosetiociPage from "./pages/PosetiociPage";
 
 function App() {
   return (
-    <div className="container mt-4">
-      <h1 className="text-center mb-4">Sistem za organizaciju događaja i rezervaciju mesta</h1>
-
-      <div className="row">
-        <div className="col-md-4">
-          <OrganizatorForma />
-        </div>
-
-        <div className="col-md-4">
-          <LokacijaForma />
-        </div>
-
-        <div className="col-md-4">
-          <PosetilacForma />
-        </div>
+    <BrowserRouter>
+      <Navbar />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dogadjaji" element={<DogadjajiPage />} />
+          <Route path="/organizatori" element={<OrganizatoriPage />} />
+          <Route path="/lokacije" element={<LokacijePage />} />
+          <Route path="/posetioci" element={<PosetiociPage />} />
+        </Routes>
       </div>
-
-      <DogadjajList />
-    </div>
+    </BrowserRouter>
   );
 }
 

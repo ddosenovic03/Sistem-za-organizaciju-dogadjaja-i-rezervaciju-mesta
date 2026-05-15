@@ -7,6 +7,7 @@ import RezervacijaForma from "./RezervacijaForma";
 function DogadjajList() {
     const [dogadjaji, setDogadjaji] = useState([]);
     const [greska, setGreska] = useState("");
+    const [dogadjajZaIzmenu, setDogadjajZaIzmenu] = useState(null);
 
     async function ucitajDogadjaje() {
         try {
@@ -30,7 +31,11 @@ function DogadjajList() {
 
     return (
         <div className="mt-4">
-            <DogadjajForma onDogadjajCreated={ucitajDogadjaje} />
+            <DogadjajForma 
+                onDogadjajCreated={ucitajDogadjaje}
+                dogadjajZaIzmenu={dogadjajZaIzmenu}
+                setDogadjajZaIzmenu={setDogadjajZaIzmenu}
+            />
 
             <h2>Događaji</h2>
 
@@ -59,7 +64,10 @@ function DogadjajList() {
                             <td>{d.organizatorIme}</td>
                             <td>{d.lokacijaNaziv}</td>
                             <td><RezervacijaForma dogadjajId={d.id} onRezervacijaCreated={ucitajDogadjaje} /></td>
-                            <td><button className="btn btn-danger" onClick={() => obrisiDogadjaj(d.id)}>Obriši</button></td>
+                            <td>
+                                <button className="btn btn-danger" onClick={() => obrisiDogadjaj(d.id)}>Obriši</button>
+                                <button className="btn btn-secondary ms-2" onClick={() => setDogadjajZaIzmenu(d)}>Izmeni</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
