@@ -42,6 +42,8 @@ function RezervacijaForma({ dogadjajId, onRezervacijaCreated }) {
     return (
         <form onSubmit={handleSubmit} className="d-flex gap-2">
             <div>
+                {poruka && <div className="alert alert-success mt-2">{poruka}</div>}
+                {greska && <div className="alert alert-danger mt-2">{greska}</div>}
                 <select name="posetilacId" className="form-control" value={posetilacId} onChange={e => setPosetilacId(e.target.value)} required>
                     <option value="">Izaberite posetioca</option>
                     {posetioci.map(pos => (
@@ -50,11 +52,6 @@ function RezervacijaForma({ dogadjajId, onRezervacijaCreated }) {
                 </select>
                 <input type="number" placeholder="Broj mesta" className="form-control" value={brMesta} onChange={e => setBrMesta(e.target.value)} required />
                 <button type="submit" className="btn btn-success">Rezerviši</button>
-            </div>
-
-            <div>
-                {poruka && <div className="alert alert-success mt-2">{poruka}</div>}
-                {greska && <div className="alert alert-danger mt-2">{greska}</div>}
             </div>
         </form>
 
