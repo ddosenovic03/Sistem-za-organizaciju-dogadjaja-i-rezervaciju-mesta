@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createLokacija } from "../services/lokacijaService";
 
-function LokacijaForma() {
+function LokacijaForma({ onLokacijaCreated }) {
     const [formData, setFormData] = useState({naziv: "", adresa: "", grad: "", kapacitet: ""});
     const [poruka, setPoruka] = useState("");
     const [greska, setGreska] = useState("");
@@ -18,6 +18,7 @@ function LokacijaForma() {
             setFormData({naziv: "", adresa: "", grad: "", kapacitet: ""});
             setPoruka("Lokacija uspešno kreirana!");
             setGreska("");
+            onLokacijaCreated();
         } catch (error) {
             setGreska("Greška prilikom kreiranja lokacije.");
             setPoruka("");

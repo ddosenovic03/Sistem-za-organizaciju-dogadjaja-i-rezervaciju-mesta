@@ -10,9 +10,18 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
     const [greska, setGreska] = useState("");
     const [poruka, setPoruka] = useState("");
 
-    useEffect(() => {
-        ucitajPodatke();
-    }, []);
+    async function ucitajPodatke() {
+        try {
+            const organizatoriData = await getOrganizatori();
+            const lokacijeData = await getLokacije();
+
+            setOrganizatori(organizatoriData);
+            setLokacije(lokacijeData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => { ucitajPodatke(); }, []);
 
     useEffect(() => {
         if (dogadjajZaIzmenu) {
@@ -26,18 +35,6 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
             });
         }
     }, [dogadjajZaIzmenu]);
-
-    async function ucitajPodatke() {
-        try {
-            const organizatoriData = await getOrganizatori();
-            const lokacijeData = await getLokacije();
-
-            setOrganizatori(organizatoriData);
-            setLokacije(lokacijeData);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     function handleChange(e) {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -88,7 +85,7 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
                     <select name="organizatorId" className="form-control" value={formData.organizatorId} onChange={handleChange} required>
                         <option value="">Izaberite organizatora</option>
                         {organizatori.map(org => (
-                            <option key={org.id} value={org.id}>{org.email}</option>
+                            <option key={org.id} value={org.id}>{org.ime} - {org.email}</option>
                         ))}
                     </select>
                 </div>
@@ -96,7 +93,7 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
                     <select name="lokacijaId" className="form-control" value={formData.lokacijaId} onChange={handleChange} required>
                         <option value="">Izaberite lokaciju</option>
                         {lokacije.map(lok => (
-                            <option key={lok.id} value={lok.id}>{lok.naziv} - {lok.adresa} - {lok.grad}</option>
+                            <option key={lok.id} value={lok.id}>{lok.naziv} - {lok.adresa}, {lok.grad} - Kapacitet: {lok.kapacitet}</option>
                         ))}
                     </select>
                 </div>

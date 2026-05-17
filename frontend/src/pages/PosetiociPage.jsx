@@ -1,7 +1,7 @@
-import PosetilacForma from "../components/PosetilacForma";
+import PosetilacList from "../components/PosetilacList";
 
 function PosetiociPage() {
-    return <PosetilacForma />;
+    return <PosetilacList />;
 }
 
 export default PosetiociPage;

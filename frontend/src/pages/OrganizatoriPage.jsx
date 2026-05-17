@@ -1,7 +1,7 @@
-import OrganizatorForma from "../components/OrganizatorForma";
+import OrganizatorList from "../components/OrganizatorList";
 
 function OrganizatoriPage() {
-    return <OrganizatorForma />;
+    return <OrganizatorList />;
 }
 
 export default OrganizatoriPage;

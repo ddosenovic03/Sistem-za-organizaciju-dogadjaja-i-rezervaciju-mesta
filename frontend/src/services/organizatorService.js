@@ -13,3 +13,14 @@ export async function createOrganizator(organizator) {
     await handleError(response);
     return response.json();
 }
+
+export async function updateOrganizator(id, organizator) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(organizator) });
+    await handleError(response);
+    return response.json();
+}
+
+export async function deleteOrganizator(id) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    await handleError(response);
+}

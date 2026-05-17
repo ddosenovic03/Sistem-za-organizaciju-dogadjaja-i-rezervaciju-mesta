@@ -1,7 +1,7 @@
-import LokacijaForma from "../components/LokacijaForma";
+import LokacijaList from "../components/LokacijaList";
 
 function LokacijePage() {
-    return <LokacijaForma />;
+    return <LokacijaList />;
 }
 
 export default LokacijePage;

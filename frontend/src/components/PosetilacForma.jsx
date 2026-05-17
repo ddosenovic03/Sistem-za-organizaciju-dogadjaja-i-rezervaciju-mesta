@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPosetilac } from "../services/posetilacService";
 
-function PosetilacForma() {
+function PosetilacForma({ onPosetilacCreated }) {
     const [formData, setFormData] = useState({ime: "", prezime: "", email: "", telefon: ""});
     const [poruka, setPoruka] = useState("");
     const [greska, setGreska] = useState("");
@@ -18,6 +18,7 @@ function PosetilacForma() {
             setFormData({ime: "", prezime: "", email: "", telefon: ""});
             setPoruka("Posetilac uspešno kreiran!");
             setGreska("");
+            onPosetilacCreated();
         } catch (error) {
             setGreska("Greška prilikom kreiranja posetioca.");
             setPoruka("");
