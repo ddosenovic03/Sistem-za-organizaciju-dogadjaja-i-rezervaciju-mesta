@@ -24,3 +24,22 @@ export async function deleteDogadjaj(id) {
     const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
     await handleError(response);
 }
+
+export async function pretraziDogadjaje(filteri) {
+    const params = new URLSearchParams();
+
+    if (filteri.naziv) params.append('naziv', filteri.naziv);
+    if (filteri.grad) params.append('grad', filteri.grad);  
+    if (filteri.datum) params.append('datum', filteri.datum);
+    if (filteri.status) params.append('status', filteri.status);
+
+    const response = await fetch(`${API_URL}/pretraga?${params.toString()}`);
+    await handleError(response);
+    return response.json();
+}
+
+export async function getNajpopularnijiDogadjaji() {
+    const response = await fetch(`${API_URL}/najpopularniji`);
+    await handleError(response);
+    return response.json();
+}

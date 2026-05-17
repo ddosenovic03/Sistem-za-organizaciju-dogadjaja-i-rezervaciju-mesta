@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDogadjaji, deleteDogadjaj } from "../services/dogadjajService";
+import { getDogadjaji, deleteDogadjaj, pretraziDogadjaje, getNajpopularnijiDogadjaji } from "../services/dogadjajService";
 import DogadjajForma from "./DogadjajForma";
 import RezervacijaForma from "./RezervacijaForma";
 
@@ -8,6 +8,7 @@ function DogadjajList() {
     const [greska, setGreska] = useState("");
     const [poruka, setPoruka] = useState("");
     const [dogadjajZaIzmenu, setDogadjajZaIzmenu] = useState(null);
+    const [filteri, setFilteri] = useState({ naziv: "", grad: "", datum: "", status: "" });
 
     async function ucitajDogadjaje() {
         try {
@@ -17,6 +18,7 @@ function DogadjajList() {
             setGreska(error.message);
         }
     }
+    useEffect(() => { ucitajDogadjaje(); }, []);
 
     async function obrisiDogadjaj(id) {
         try {
@@ -28,7 +30,34 @@ function DogadjajList() {
         }
     }
 
-    useEffect(() => { ucitajDogadjaje(); }, []);
+    function handleFilterChange(e) {
+        setFilteri({ ...filteri, [e.target.name]: e.target.value });
+    }
+
+    async function handlePretraga(e) {
+        try {
+            const data = await pretraziDogadjaje(filteri);
+            setDogadjaji(data);
+            setGreska("");
+        } catch (error) {
+            setGreska(error.message);
+        }
+    }
+
+    async function handleNajpopularniji() {
+        try {
+            const data = await getNajpopularnijiDogadjaji();
+            setDogadjaji(data);
+            setGreska("");
+        } catch (error) {
+            setGreska(error.message);
+        }
+    }
+
+    function resetujFiltere() {
+        setFilteri({ naziv: "", grad: "", datum: "", status: "" });
+        ucitajDogadjaje();
+    }
 
     return (
         <div className="mt-4">
@@ -42,6 +71,33 @@ function DogadjajList() {
 
             {poruka && <div className="alert alert-success">{poruka}</div>}
             {greska && <div className="alert alert-danger">{greska}</div>}
+
+            <div className="card p-3 mt-4">
+                <h3>Pretraga događaja</h3>
+                <div className="row">
+                    <div className="col-md-3">
+                        <input type="text" className="form-control" placeholder="Naziv" name="naziv" value={filteri.naziv} onChange={handleFilterChange} />
+                    </div>
+                    <div className="col-md-3">
+                        <input type="text" className="form-control" placeholder="Grad" name="grad" value={filteri.grad} onChange={handleFilterChange} />
+                    </div>
+                    <div className="col-md-3">
+                        <input type="date" className="form-control" placeholder="Datum" name="datum" value={filteri.datum} onChange={handleFilterChange} />
+                    </div>
+                    <div className="col-md-3">
+                        <select className="form-control" name="status" value={filteri.status} onChange={handleFilterChange}>
+                            <option value="">Svi statusi</option>
+                            <option value="AKTIVAN">AKTIVAN</option>
+                            <option value="POPUNJEN">POPUNJEN</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="mt-3 d-flex gap-2">
+                    <button className="btn btn-primary" onClick={handlePretraga}>Pretraži</button>
+                    <button className="btn btn-secondary" onClick={resetujFiltere}>Resetuj</button>
+                    <button className="btn btn-info" onClick={handleNajpopularniji}>Najpopularniji</button>
+                </div>
+            </div>
 
             <table className="table table-bordered table-striped">
                 <thead>
