@@ -63,7 +63,7 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
 
     return (
         <div className="card p-3 mt-4">
-            <h2>Dodaj događaj</h2>
+            <h2>{ dogadjajZaIzmenu ? "Izmeni događaj" : "Dodaj događaj" }</h2>
 
             {greska && <div className="alert alert-danger">{greska}</div>}
             {poruka && <div className="alert alert-success">{poruka}</div>}
@@ -98,7 +98,7 @@ function DogadjajForma({onDogadjajCreated, dogadjajZaIzmenu, setDogadjajZaIzmenu
                     </select>
                 </div>
                 <button type="submit" className="btn btn-primary">{ dogadjajZaIzmenu ? "Izmeni" : "Dodaj" }</button>
-                {dogadjajZaIzmenu && (
+                { dogadjajZaIzmenu && (
                     <button type="button" className="btn btn-secondary ms-2"
                         onClick={() => {
                             setDogadjajZaIzmenu(null);

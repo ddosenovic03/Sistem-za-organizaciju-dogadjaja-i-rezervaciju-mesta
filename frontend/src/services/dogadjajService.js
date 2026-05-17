@@ -9,18 +9,18 @@ export async function getDogadjaji() {
 }
 
 export async function createDogadjaj(dogadjaj) {
-    const response = await fetch(API_URL, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dogadjaj)});
+    const response = await fetch(API_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dogadjaj) });
     await handleError(response);
     return response.json();
 }
 
 export async function updateDogadjaj(id, dogadjaj) {
-    const response = await fetch(`${API_URL}/${id}`, {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dogadjaj)});
+    const response = await fetch(`${API_URL}/${id}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dogadjaj) });
     await handleError(response);
     return response.json();
 }
 
 export async function deleteDogadjaj(id) {
-    const response = await fetch(`${API_URL}/${id}`, {method: 'DELETE'});
+    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
     await handleError(response);
 }

@@ -49,6 +49,7 @@ function DogadjajList() {
                         <th>Naziv</th>
                         <th>Opis</th>
                         <th>Datum</th>
+                        <th>Maksimalan broj mesta</th>
                         <th>Slobodna mesta</th>
                         <th>Status</th>
                         <th>Organizator</th>
@@ -63,14 +64,15 @@ function DogadjajList() {
                             <td>{d.naziv}</td>
                             <td>{d.opis}</td>
                             <td>{d.datumOdrzavanja}</td>
+                            <td>{d.maksBrMesta}</td>
                             <td>{d.brSlobodnihMesta}</td>
                             <td>{d.status}</td>
                             <td>{d.organizatorIme}</td>
                             <td>{d.lokacijaNaziv}</td>
                             <td><RezervacijaForma dogadjajId={d.id} onRezervacijaCreated={ucitajDogadjaje} /></td>
                             <td>
-                                <button className="btn btn-danger" onClick={() => obrisiDogadjaj(d.id)}>Obriši</button>
-                                <button className="btn btn-secondary ms-2" onClick={() => setDogadjajZaIzmenu(d)}>Izmeni</button>
+                                <button className="btn btn-warning btn-sm" onClick={() => setDogadjajZaIzmenu(d)}>Izmeni</button>
+                                <button className="btn btn-danger btn-sm" onClick={() => obrisiDogadjaj(d.id)}>Obriši</button>
                             </td>
                         </tr>
                     ))}

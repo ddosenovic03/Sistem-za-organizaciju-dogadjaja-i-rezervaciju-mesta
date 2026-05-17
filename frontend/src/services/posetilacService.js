@@ -13,3 +13,14 @@ export async function createPosetilac(posetilac) {
     await handleError(response);
     return response.json();
 }
+
+export async function updatePosetilac(id, posetilac) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(posetilac) });
+    await handleError(response);
+    return response.json();
+}
+
+export async function deletePosetilac(id) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    await handleError(response);
+}

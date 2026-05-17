@@ -13,3 +13,14 @@ export async function createLokacija(lokacija) {
     await handleError(response);
     return response.json();
 }
+
+export async function updateLokacija(id, lokacija) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lokacija) });
+    await handleError(response);
+    return response.json();
+}
+
+export async function deleteLokacija(id) {
+    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    await handleError(response);
+}
